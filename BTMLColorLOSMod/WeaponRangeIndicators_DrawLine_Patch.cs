@@ -150,7 +150,7 @@ namespace BTMLColorLOSMod
                                             {
                                                 line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Back.Color, shotQuality);
                                             } else if (ModSettings.Direct.Active) {
-                                            line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Direct.Color, shotQuality);
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Direct.Color, shotQuality);
                                             }
                                         }
                                         line.startWidth =
@@ -224,7 +224,7 @@ namespace BTMLColorLOSMod
                                     {
                                         line.material.color = Color.white;
                                         if (ModSettings.ObstructedAttackerSide.Colorside)
-                                            {
+                                        {
                                             if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active)
                                             {
                                                 line.startColor = line.endColor = ModSettings.Side.Color;
@@ -237,10 +237,11 @@ namespace BTMLColorLOSMod
                                             {
                                                 line.startColor = line.endColor = ModSettings.Direct.Color;
                                             }
-                                        } else
-                                            {
-                                                line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
-                                            }
+                                        }
+                                        else
+                                        {
+                                            line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
+                                        }
                                         line.startWidth = line.endWidth = ModSettings.ObstructedAttackerSide.Thickness;
                                         if (ModSettings.ObstructedAttackerSide.Dashed)
                                         {
@@ -293,10 +294,16 @@ namespace BTMLColorLOSMod
                                 {
                                     float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                         "GetShotQuality", new object[] { selectedActor, position, rotation, target });
-                                    Color color6 = Color.Lerp(
-                                        Color.clear,
-                                        ModSettings.Indirect.Color,
-                                        shotQuality);
+                                    Color couleur = ModSettings.Indirect.Color;
+                                    if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active && ModSettings.Indirect.Colorside)
+                                    {
+                                        couleur = ModSettings.Side.Color;
+                                    }
+                                    if (direction == AttackDirection.FromBack && ModSettings.Back.Active && ModSettings.Indirect.Colorside)
+                                    {
+                                        couleur = ModSettings.Back.Color;
+                                    }
+                                    Color color6 = Color.Lerp(Color.clear, couleur, shotQuality);
                                     if (ModSettings.Indirect.Dashed)
                                     {
                                         line.material = __instance.MaterialOutOfRange;
