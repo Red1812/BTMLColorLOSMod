@@ -18,6 +18,12 @@ namespace BTMLColorLOSMod
         public LineSetting indirect = new LineSetting();
         public LineSetting Indirect => indirect;
 
+        public LineSetting side = new LineSetting();
+        public LineSetting Side => side;
+
+        public LineSetting back = new LineSetting();
+        public LineSetting Back => back;
+
         public LineSetting obstructedAttackerSide = new LineSetting();
         public LineSetting ObstructedAttackerSide => obstructedAttackerSide;
 

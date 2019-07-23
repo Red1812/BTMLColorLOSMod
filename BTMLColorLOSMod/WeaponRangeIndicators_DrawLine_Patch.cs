@@ -37,39 +37,41 @@ namespace BTMLColorLOSMod
                 Vector3 vector2 = Vector3.Lerp(target.CurrentPosition, target.TargetPosition,
                     __instance.targetLaserDestRatio);
                 AbstractActor targetActor = target as AbstractActor;
-                // melee
-                if (isMelee)
-                {
-                    line.startWidth = __instance.LOSWidthBegin;
-                    line.endWidth = __instance.LOSWidthEnd;
-                    line.material = __instance.MaterialInRange;
-                    line.startColor = __instance.LOSLockedTarget;
-                    line.endColor = __instance.LOSLockedTarget;
-                    line.positionCount = 2;
-                    line.SetPosition(0, vector);
-                    Vector3 vector3 = vector - vector2;
-                    vector3.Normalize();
-                    vector3 *= __instance.LineEndOffset;
-                    vector2 += vector3;
-                    line.SetPosition(1, vector2);
-                    ReflectionHelper.InvokePrivateMethode(__instance, "SetEnemyTargetable", new object[] { target, true });
-                    List<AbstractActor> allActors = selectedActor.Combat.AllActors;
-                    allActors.Remove(selectedActor);
-                    allActors.Remove(targetActor);
-                    PathNode pathNode = default(PathNode);
-                    Vector3 attackPosition = default(Vector3);
-                    float num = default(float);
-                    selectedActor.Pathing.GetMeleeDestination(targetActor, allActors, out pathNode, out attackPosition,
-                        out num);
-                    HUD.InWorldMgr.ShowAttackDirection(HUD.SelectedActor, targetActor,
-                        HUD.Combat.HitLocation.GetAttackDirection(attackPosition, target), vector2.y,
-                        MeleeAttackType.Punch, 0);
-                }
-                // not melee
-                else
+            // melee
+            if (isMelee)
+            {
+                line.startWidth = __instance.LOSWidthBegin;
+                line.endWidth = __instance.LOSWidthEnd;
+                line.material = __instance.MaterialInRange;
+                line.startColor = __instance.LOSLockedTarget;
+                line.endColor = __instance.LOSLockedTarget;
+                line.positionCount = 2;
+                line.SetPosition(0, vector);
+                Vector3 vector3 = vector - vector2;
+                vector3.Normalize();
+                vector3 *= __instance.LineEndOffset;
+                vector2 += vector3;
+                line.SetPosition(1, vector2);
+                ReflectionHelper.InvokePrivateMethode(__instance, "SetEnemyTargetable", new object[] { target, true });
+                List<AbstractActor> allActors = selectedActor.Combat.AllActors;
+                allActors.Remove(selectedActor);
+                allActors.Remove(targetActor);
+                PathNode pathNode = default(PathNode);
+                Vector3 attackPosition = default(Vector3);
+                float num = default(float);
+                selectedActor.Pathing.GetMeleeDestination(targetActor, allActors, out pathNode, out attackPosition,
+                    out num);
+                HUD.InWorldMgr.ShowAttackDirection(HUD.SelectedActor, targetActor,
+                    HUD.Combat.HitLocation.GetAttackDirection(attackPosition, target), vector2.y,
+                    MeleeAttackType.Punch, 0);
+            }
+            // not melee
+            else
+
                 {
                     FiringPreviewManager.PreviewInfo previewInfo =
                         HUD.SelectionHandler.ActiveState.FiringPreview.GetPreviewInfo(target);
+                    AttackDirection direction = HUD.Combat.HitLocation.GetAttackDirection(position, target);
                     if (previewInfo.availability == FiringPreviewManager.TargetAvailability.NotSet)
                     {
                         Debug.LogError("Error - trying to draw line with no FiringPreviewManager availability!");
@@ -135,12 +137,21 @@ namespace BTMLColorLOSMod
                                     {
                                         Logger.Debug("LOF facing");
 
-                                        if (ModSettings.Direct.Active)
+                                        if (ModSettings.Direct.Active || ModSettings.Side.Active || ModSettings.Back.Active)
                                         {
                                             float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                                 "GetShotQuality", new object[] { selectedActor, position, rotation, target });
                                             line.material.color = Color.white;
+                                            if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active)
+                                            {
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Side.Color, shotQuality);
+                                            }
+                                            else if (direction == AttackDirection.FromBack && ModSettings.Back.Active)
+                                            {
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Back.Color, shotQuality);
+                                            } else if (ModSettings.Direct.Active) {
                                             line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Direct.Color, shotQuality);
+                                            }
                                         }
                                         line.startWidth =
                                             __instance.LOSWidthBegin * __instance.LOSWidthFacingTargetMultiplier;
@@ -149,32 +160,43 @@ namespace BTMLColorLOSMod
                                     else
                                     {
                                         // enemy in firing arc and have shot
-                                        if (ModSettings.Direct.Active)
+                                        if (ModSettings.Direct.Active || ModSettings.Side.Active || ModSettings.Back.Active)
                                         {
 
                                             float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                                 "GetShotQuality", new object[] { selectedActor, position, rotation, target });
                                             line.material.color = Color.white;
-                                            line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Direct.Color, shotQuality);
-                                            // PoC follows for a very high contrast line to help color blind players
-//                                            line.endColor = line.startColor = Color.black;
-//                                            LineRenderer line8080 =
-//                                                (LineRenderer)ReflectionHelper.InvokePrivateMethode(__instance, "getLine",
-//                                                    new object[] { });
-//                                            line8080.positionCount = 2;
-//                                            line8080.SetPosition(0, vector);
-//                                            line8080.material = __instance.MaterialOutOfRange;
-//                                            line8080.endColor = line8080.startColor = Color.white;
-//                                            line8080.material.color = Color.white;
-//                                            line8080.startWidth = line8080.endWidth = ModSettings.Direct.Thickness * 1.5f;
-//                                            line8080.SetPosition(1, vector2);
-                                            if (ModSettings.Direct.Dashed)
+                                            if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active)
                                             {
-                                                line.material = __instance.MaterialOutOfRange;
-                                                line.material.color = line.endColor;
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Side.Color, shotQuality);
+                                                line.startWidth = line.endWidth = ModSettings.Side.Thickness;
+                                                if (ModSettings.Side.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
+                                            }
+                                            else if (direction == AttackDirection.FromBack && ModSettings.Back.Active)
+                                            {
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Back.Color, shotQuality);
+                                                line.startWidth = line.endWidth = ModSettings.Back.Thickness;
+                                                if (ModSettings.Back.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
+                                            }
+                                            else if (ModSettings.Direct.Active)
+                                            {
+                                                line.endColor = line.startColor = Color.Lerp(Color.clear, ModSettings.Direct.Color, shotQuality);
+                                                line.startWidth = line.endWidth = ModSettings.Direct.Thickness;
+                                                if (ModSettings.Direct.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
                                             }
                                         }
-                                        line.startWidth = line.endWidth = ModSettings.Direct.Thickness;
                                     }
 
                                     line.SetPosition(1, vector2);
@@ -201,7 +223,24 @@ namespace BTMLColorLOSMod
                                     if (ModSettings.ObstructedAttackerSide.Active)
                                     {
                                         line.material.color = Color.white;
-                                        line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
+                                        if (ModSettings.ObstructedAttackerSide.Colorside)
+                                            {
+                                            if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active)
+                                            {
+                                                line.startColor = line.endColor = ModSettings.Side.Color;
+                                            }
+                                            else if (direction == AttackDirection.FromBack && ModSettings.Back.Active)
+                                            {
+                                                line.startColor = line.endColor = ModSettings.Back.Color;
+                                            }
+                                            else if (ModSettings.Direct.Active)
+                                            {
+                                                line.startColor = line.endColor = ModSettings.Direct.Color;
+                                            }
+                                        } else
+                                            {
+                                                line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
+                                            }
                                         line.startWidth = line.endWidth = ModSettings.ObstructedAttackerSide.Thickness;
                                         if (ModSettings.ObstructedAttackerSide.Dashed)
                                         {

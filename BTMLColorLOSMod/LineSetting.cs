@@ -8,6 +8,9 @@ namespace BTMLColorLOSMod
         public bool active = false;
         public bool Active => active;
 
+        public bool colorside = false;
+        public bool Colorside => colorside;
+
         public float[][] colors
         {
             set

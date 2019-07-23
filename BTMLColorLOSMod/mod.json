@@ -2,9 +2,9 @@
   "Name": "BTMLColorLOSMod",
   "Enabled": true,
 
-  "Version": "0.6.0",
+  "Version": "0.6.2",
 
-  "Author": "janxious",
+  "Author": "janxious, Redferne",
   "Website": "https://github.com/janxious/BTMLColorLOSMod",
 
   "DLL": "BTMLColorLOSMod.dll",
@@ -14,7 +14,7 @@
 
   "Settings": {
     "nextColorKeyBinding": {
-      "active": true,
+      "active": false,
       "keys": ["shift", "i"]
     },
 
@@ -32,18 +32,41 @@
     "indirect": {
       "active": true,
       "colors": [
-        [255, 128,   0, 255],
-        [  0, 255,   0, 255],
-        [255,   0,   0, 255],
-        [  0,   0, 255, 255]
+        [ 255, 128, 0, 255 ],
+        [ 0, 255, 0, 255 ],
+        [ 255, 0, 0, 255 ],
+        [ 0, 0, 255, 255 ]
       ],
       "dashed": true,
-      "thickness": 1.75
+      "thickness": 1
+    },
+    "side": {
+      "active": true,
+      "colors": [
+        [ 0, 255, 255, 255 ],
+        [ 0, 255, 0, 255 ],
+        [ 0, 0, 255, 255 ],
+        [ 0, 0, 0, 255 ]
+      ],
+      "dashed": false,
+      "thickness": 1
+    },
+    "back": {
+      "active": true,
+      "colors": [
+        [ 0, 218, 0, 255 ],
+        [ 0, 255, 0, 255 ],
+        [ 0, 0, 255, 255 ],
+        [ 0, 0, 0, 255 ]
+      ],
+      "dashed": false,
+      "thickness": 1
     },
     "obstructedAttackerSide": {
-      "active": false,
+      "active": true,
+      "colorside":  true,
       "colors": [
-        [  0,  64, 255, 255],
+        [  221,  0, 255, 255],
         [  0,   0, 255, 255],
         [  0, 255,   0, 255],
         [255,   0,   0, 255]
@@ -54,13 +77,13 @@
     "obstructedTargetSide": {
       "active": true,
       "colors": [
-        [153,   0, 255, 230],
+        [204,   136, 238, 255],
         [255,   0,   0, 255],
         [  0,   0, 255, 255],
         [  0, 255,   0, 255]
       ],
-      "dashed": false,
-      "thickness": 1.25
+      "dashed": true,
+      "thickness": 1
     }
   }
 }
