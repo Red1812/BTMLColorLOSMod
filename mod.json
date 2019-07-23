@@ -2,7 +2,7 @@
     "Name": "BTMLColorLOSMod",
     "Enabled": true,
 
-    "Version": "0.6.2.3",
+    "Version": "0.6.2.4",
 
     "Author": "janxious, Redferne",
     "Website": "https://github.com/Red1812/BTMLColorLOSMod",
@@ -31,6 +31,7 @@
         },
         "indirect": {
             "active": true,
+            "colorside":  true,
             "colors": [
                 [ 255, 128, 0, 255 ],
                 [ 0, 255, 0, 255 ],

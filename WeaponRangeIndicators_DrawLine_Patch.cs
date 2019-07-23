@@ -294,10 +294,16 @@ namespace BTMLColorLOSMod
                                 {
                                     float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                         "GetShotQuality", new object[] { selectedActor, position, rotation, target });
-                                    Color color6 = Color.Lerp(
-                                        Color.clear,
-                                        ModSettings.Indirect.Color,
-                                        shotQuality);
+                                    Color couleur = ModSettings.Indirect.Color;
+                                    if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active && ModSettings.Indirect.Colorside)
+                                    {
+                                        couleur = ModSettings.Side.Color;
+                                    }
+                                    if (direction == AttackDirection.FromBack && ModSettings.Back.Active && ModSettings.Indirect.Colorside)
+                                    {
+                                        couleur = ModSettings.Back.Color;
+                                    }
+                                    Color color6 = Color.Lerp(Color.clear, couleur, shotQuality);
                                     if (ModSettings.Indirect.Dashed)
                                     {
                                         line.material = __instance.MaterialOutOfRange;
