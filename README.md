@@ -18,7 +18,7 @@ Added by Redferne in v0.6.4:
 
 - Change the color of side and back line of fire indicator drawn between the currently controlled mech and enemy targets 
 - Color attacker side when obstructed can keep its color as if not obstructed. Target side remains the same
-- Indirect los depending on where you're facing.
+- Indirect LOS color depending on where you're facing.
 
 ## Download
 Downloads can be found on [Github](https://github.com/Red1812/BTMLColorLOSMod/releases)
