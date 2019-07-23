@@ -1,5 +1,5 @@
 # BTMLColorLOSMod
-BattleTech Mod (using [BTML](https://github.com/Mpstark/BattleTechModLoader) and [ModTek](https://github.com/Mpstark/ModTek)) that changes the color of indirect firing lines in battle to a different color from direct.
+BattleTech Mod (using [ModTek](https://github.com/Mpstark/ModTek)) that changes the color of indirect firing lines in battle to a different color from direct.
 
 You've been in the situation where the lines are both red and you move and then realize you actually don't have an alpha strike. The orange-yellow line is indirect fire:
 
@@ -14,11 +14,16 @@ The defaults for this mod setup the indirect line and the nearer target obstruct
 - Add dashes to the line of fire indicator drawn between the currently controlled mech and enemy targets
 - Shift to different color settings with an easy button press
 
+Added by Redferne in v0.6.2
+
+- Change the color of side and back line of fire indicator drawn between the currently controlled mech and enemy targets 
+- Color attacker side when obstructed can keep its color as if not obstructed. Target side remains the same
+
 ## Download
-Downloads can be found on [Github](https://github.com/janxious/BTMLColorLOSMod/releases) and on [Nexus](https://www.nexusmods.com/battletech/mods/135).
+Downloads can be found on [Github](https://github.com/Red1812/BTMLColorLOSMod/releases)
 
 ## Install
-- [Install BTML and Modtek](https://github.com/Mpstark/ModTek/wiki/The-Drop-Dead-Simple-Guide-to-Installing-BTML-&-ModTek-&-ModTek-mods).
+- [Install ModTek](https://github.com/Mpstark/ModTek)
 - Put the `BTMLColorLOSMod.dll` and `mod.json` files into `\BATTLETECH\Mods\BTMLColorLOSMod` folder.
 - If you want to change the settings do so in the mod.json.
 - Start the game.
@@ -26,7 +31,7 @@ Downloads can be found on [Github](https://github.com/janxious/BTMLColorLOSMod/r
 ## Settings
 
 ### Line Settings
-For each kind of line supported there is a key with its own settings in `mod.json`. Those keys are `direct`, `indirect`, `obstructedAttackerSide`, and `obstructedTargetSide`. They each have data structured like:
+For each kind of line supported there is a key with its own settings in `mod.json`. Those keys are `direct`, `indirect`, `side`, `back`, `obstructedAttackerSide`, and `obstructedTargetSide`. They each have data structured like:
 
 ```json
 {
@@ -48,6 +53,7 @@ Setting | Type | Description
 `dashed` | `bool` | enabled/disable making a type of line dashed
 `thickness` | `float` | change the size of a given line on-screen to be bigger or smaller. Vanilla game almost everything is 1.
 `colors` | `float[][4]` | an array of RGBA color settings that can be used in-game to color the given line
+`colorside` | `bool` | enable/disable color attacker side when obstructed to remain the same as if not obstructed. Target side is not affected.
 
 The `color` variables below (`float[4]`) are RGBA colors. You can enter your colors as a number 0-255, or a float from 0 to 1. For example, pure red can be entered as `[255, 0, 0, 255]` (hex/web format) or `[1, 0, 0, 1]` (unity format). If you make the alpha channel `0`, you will probably not have a line at all. You can use a color picker like [the W3's](https://www.w3schools.com/colors/colors_picker.asp) or a color chart like [websitetip](http://websitetips.com/colorcharts/daxassist/)'s to find colors you like.
 
