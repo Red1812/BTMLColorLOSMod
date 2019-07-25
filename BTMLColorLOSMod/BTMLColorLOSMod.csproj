@@ -45,7 +45,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BATTLETECH\BattleTech_Data\Managed\Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:\Steam\steamapps\common\BATTLETECH\Mods\ModTek\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -82,4 +82,9 @@
     <Content Include="mod.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)\Release\$(TargetName)\" /Y
+xcopy "$(ProjectDir)mod.json" "$(SolutionDir)\Release\$(TargetName)\" /Y
+xcopy "$(SolutionDir)readme.md" "$(SolutionDir)\Release\$(TargetName)\" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
