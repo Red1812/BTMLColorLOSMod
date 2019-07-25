@@ -71,10 +71,13 @@ namespace BTMLColorLOSMod
                     FiringPreviewManager.PreviewInfo previewInfo =
                         HUD.SelectionHandler.ActiveState.FiringPreview.GetPreviewInfo(target);
                     AttackDirection direction = HUD.Combat.HitLocation.GetAttackDirection(position, target);
-                    Color chosenColor = ModSettings.Direct.Color;
-                    if (direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) { chosenColor = ModSettings.Side.Color; }
-                    if (direction == AttackDirection.FromBack) { chosenColor = ModSettings.Back.Color; }
-                    if (target.UnitType == UnitType.Turret || target.UnitType == UnitType.Building) { chosenColor = ModSettings.Direct.Color; }
+                    bool status = false;
+                    Color chosenColor = __instance.LOSInRange;
+                    if (direction == AttackDirection.FromFront && ModSettings.Direct.Active) { chosenColor = ModSettings.Direct.Color; status = true; }
+                    if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active) { chosenColor = ModSettings.Side.Color; status = true; }
+                    if (direction == AttackDirection.FromBack && ModSettings.Back.Active) { chosenColor = ModSettings.Back.Color; status = true; }
+                    if ((target.UnitType == UnitType.Turret || target.UnitType == UnitType.Building) && status) { chosenColor = ModSettings.Direct.Color; }
+                
                     if (previewInfo.availability == FiringPreviewManager.TargetAvailability.NotSet)
                     {
                         Debug.LogError("Error - trying to draw line with no FiringPreviewManager availability!");
@@ -140,7 +143,7 @@ namespace BTMLColorLOSMod
                                     {
                                         Logger.Debug("LOF facing");
 
-                                        if (ModSettings.Direct.Active || ModSettings.Side.Active || ModSettings.Back.Active)
+                                        if (status)
                                         {
                                             float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                                 "GetShotQuality", new object[] { selectedActor, position, rotation, target });
@@ -154,31 +157,41 @@ namespace BTMLColorLOSMod
                                     else
                                     {
                                         // enemy in firing arc and have shot
-                                        if (ModSettings.Direct.Active || ModSettings.Side.Active || ModSettings.Back.Active)
+                                        if (status)
                                         {
 
                                             float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance,
                                                 "GetShotQuality", new object[] { selectedActor, position, rotation, target });
                                             line.material.color = Color.white;
                                             line.endColor = line.startColor = Color.Lerp(Color.clear, chosenColor, shotQuality);
-                                            if (ModSettings.Side.Dashed)
+                                            if (direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight)
                                             {
-                                                line.material = __instance.MaterialOutOfRange;
-                                                line.material.color = line.endColor;
+                                                if (ModSettings.Side.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
                                                 line.startWidth = line.endWidth = ModSettings.Side.Thickness;
                                             }
-                                            if (ModSettings.Back.Dashed)
+                                            else if (direction == AttackDirection.FromBack)
                                             {
-                                                line.material = __instance.MaterialOutOfRange;
-                                                line.material.color = line.endColor;
+                                                if (ModSettings.Back.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
                                                 line.startWidth = line.endWidth = ModSettings.Back.Thickness;
                                             }
-                                            if (ModSettings.Direct.Dashed)
+                                            else
                                             {
-                                                line.material = __instance.MaterialOutOfRange;
-                                                line.material.color = line.endColor;
+                                                if (ModSettings.Side.Dashed)
+                                                {
+                                                    line.material = __instance.MaterialOutOfRange;
+                                                    line.material.color = line.endColor;
+                                                }
                                                 line.startWidth = line.endWidth = ModSettings.Direct.Thickness;
                                             }
+
                                         }
                                     }
 
@@ -206,13 +219,10 @@ namespace BTMLColorLOSMod
                                     if (ModSettings.ObstructedAttackerSide.Active)
                                     {
                                         line.material.color = Color.white;
-                                        if (ModSettings.ObstructedAttackerSide.Colorside)
+                                        line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
+                                        if (ModSettings.ObstructedAttackerSide.Colorside && direction != AttackDirection.ToProne)
                                         {
                                             line.startColor = line.endColor = chosenColor;
-                                        }
-                                        else
-                                        {
-                                            line.startColor = line.endColor = ModSettings.ObstructedAttackerSide.Color;
                                         }
                                         line.startWidth = line.endWidth = ModSettings.ObstructedAttackerSide.Thickness;
                                         if (ModSettings.ObstructedAttackerSide.Dashed)

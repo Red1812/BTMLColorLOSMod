@@ -2,7 +2,7 @@
     "Name": "BTMLColorLOSMod",
     "Enabled": true,
 
-    "Version": "0.6.5.1",
+    "Version": "0.6.5.2",
 
     "Author": "janxious, Redferne",
     "Website": "https://github.com/Red1812/BTMLColorLOSMod",
@@ -13,6 +13,7 @@
     "ConflictsWith": [],
 
     "Settings": {
+        "debug": false,
         "nextColorKeyBinding": {
             "active": false,
             "keys": [ "shift", "i" ]
@@ -29,9 +30,10 @@
             "dashed": false,
             "thickness": 1
         },
+
         "indirect": {
             "active": true,
-            "colorside":  true,
+            "colorside": true,
             "colors": [
                 [ 255, 128, 0, 255 ],
                 [ 0, 255, 0, 255 ],
@@ -41,6 +43,7 @@
             "dashed": true,
             "thickness": 1
         },
+
         "side": {
             "active": true,
             "colors": [
@@ -52,6 +55,7 @@
             "dashed": false,
             "thickness": 1
         },
+
         "back": {
             "active": true,
             "colors": [
@@ -63,6 +67,7 @@
             "dashed": false,
             "thickness": 1
         },
+
         "obstructedAttackerSide": {
             "active": true,
             "colorside": true,
@@ -75,6 +80,7 @@
             "dashed": false,
             "thickness": 1
         },
+
         "obstructedTargetSide": {
             "active": true,
             "colors": [
