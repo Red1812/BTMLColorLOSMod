@@ -14,6 +14,9 @@ The defaults for this mod setup the indirect line and the nearer target obstruct
 - Add dashes to the line of fire indicator drawn between the currently controlled mech and enemy targets
 - Shift to different color settings with an easy button press
 
+Added by Redferne in v0.7:
+- Fixed for BT 1.7 using the new DrawLine from HBS
+
 Added by Redferne in v0.6.4:
 
 - Change the color of side and back line of fire indicator drawn between the currently controlled mech and enemy targets 
