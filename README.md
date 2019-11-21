@@ -1,5 +1,5 @@
 # BTMLColorLOSMod
-BattleTech Mod (using [ModTek](https://github.com/Mpstark/ModTek)) that changes the color of indirect firing lines in battle to a different color from direct.
+BattleTech Mod: extract in C:\Users\%USERNAME%\Documents\My Games\BattleTech\mods\HBS\
 
 You've been in the situation where the lines are both red and you move and then realize you actually don't have an alpha strike. The orange-yellow line is indirect fire:
 
@@ -14,7 +14,12 @@ The defaults for this mod setup the indirect line and the nearer target obstruct
 - Add dashes to the line of fire indicator drawn between the currently controlled mech and enemy targets
 - Shift to different color settings with an easy button press
 
+Added by Redferne in v0.8:
+
+- Recompiled for BT 1.8
+
 Added by Redferne in v0.7:
+
 - Fixed for BT 1.7 using the new DrawLine from HBS
 
 Added by Redferne in v0.6.4:
