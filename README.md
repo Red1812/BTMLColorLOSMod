@@ -1,5 +1,5 @@
 # BTMLColorLOSMod
-BattleTech Mod: extract in C:\Users\%USERNAME%\Documents\My Games\BattleTech\mods\HBS\
+BattleTech Mod: extract in C:\Users\\%USERNAME%\Documents\My Games\BattleTech\mods\HBS\
 
 You've been in the situation where the lines are both red and you move and then realize you actually don't have an alpha strike. The orange-yellow line is indirect fire:
 
