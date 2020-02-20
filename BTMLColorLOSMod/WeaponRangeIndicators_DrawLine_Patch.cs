@@ -37,8 +37,8 @@ namespace BTMLColorLOSMod
                 line.startWidth = __instance.LOSWidthBegin;
                 line.endWidth = __instance.LOSWidthEnd;
                 line.material = __instance.MaterialInRange;
-                line.startColor = __instance.LOSLockedTarget;
-                line.endColor = __instance.LOSLockedTarget;
+                line.startColor = __instance.FinalLOSLockedTarget.color;
+                line.endColor = __instance.FinalLOSLockedTarget.color;
                 line.positionCount = 2;
                 line.SetPosition(0, vector);
                 Vector3 vector3 = vector - vector2;
@@ -56,11 +56,15 @@ namespace BTMLColorLOSMod
                 selectedActor.Pathing.GetMeleeDestination(abstractActor, allActors, out pathNode, out attackPosition, out num);
                 HUD.InWorldMgr.ShowAttackDirection(HUD.SelectedActor, abstractActor, HUD.Combat.HitLocation.GetAttackDirection(attackPosition, target), vector2.y, MeleeAttackType.Punch, 0);
             }
+            if (abstractActor != null)
+            {
+                HUD.InWorldMgr.SetGuardedActive(abstractActor);
+            }
             FiringPreviewManager.PreviewInfo previewInfo = HUD.SelectionHandler.ActiveState.FiringPreview.GetPreviewInfo(target);
 
             AttackDirection direction = HUD.Combat.HitLocation.GetAttackDirection(position, target);
             bool status = false;
-            Color chosenColor = __instance.LOSInRange;
+            Color chosenColor = __instance.FinalLOSInRange.color;
             if (direction == AttackDirection.FromFront && ModSettings.Direct.Active) { chosenColor = ModSettings.Direct.Color; status = true; }
             if ((direction == AttackDirection.FromLeft || direction == AttackDirection.FromRight) && ModSettings.Side.Active) { chosenColor = ModSettings.Side.Color; status = true; }
             if (direction == AttackDirection.FromBack && ModSettings.Back.Active) { chosenColor = ModSettings.Back.Color; status = true; }
@@ -78,21 +82,21 @@ namespace BTMLColorLOSMod
                 {
                     if (target == HUD.SelectedTarget)
                     {
-                        line.startColor = (line.endColor = __instance.LOSMultiTargetKBSelection);
+                        line.startColor = (line.endColor = __instance.FinalLOSMultiTargetKBSelection.color);
                     }
                     else if (isLocked)
                     {
-                        line.startColor = (line.endColor = __instance.LOSLockedTarget);
+                        line.startColor = (line.endColor = __instance.FinalLOSLockedTarget.color);
                     }
                     else
                     {
-                        line.startColor = (line.endColor = __instance.LOSUnlockedTarget);
+                        line.startColor = (line.endColor = __instance.FinalLOSUnlockedTarget.color);
                     }
                 }
                 else
                 {
                     float shotQuality = (float)ReflectionHelper.InvokePrivateMethode(__instance, "GetShotQuality", new object[] { selectedActor, position, rotation, target });
-                    Color endColor = Color.Lerp(Color.clear, __instance.LOSInRange, shotQuality);
+                    Color endColor = Color.Lerp(Color.clear, __instance.FinalLOSInRange.color, shotQuality);
                     line.startColor = (line.endColor = endColor);
                 }
                 line.material = __instance.MaterialInRange;
@@ -208,7 +212,7 @@ namespace BTMLColorLOSMod
                         }
                         else
                         {
-                            line2.startColor = line2.endColor = __instance.LOSBlocked;
+                            line2.startColor = line2.endColor = __instance.FinalLOSBlocked.color;
                             line2.startWidth = line2.endWidth = __instance.LOSWidthBlocked;
                         }
                         line2.SetPosition(0, vector5);
@@ -261,7 +265,7 @@ namespace BTMLColorLOSMod
                 line.positionCount = 2;
                 line.SetPosition(0, vector);
                 line.SetPosition(1, vector2);
-                line.startColor = (line.endColor = __instance.LOSOutOfRange);
+                line.startColor = (line.endColor = __instance.FinalLOSOutOfRange.color);
                 line.material = __instance.MaterialOutOfRange;
                 ReflectionHelper.InvokePrivateMethode(__instance, "SetEnemyTargetable", new object[] { target, false });
             }
